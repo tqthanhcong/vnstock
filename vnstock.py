@@ -9,6 +9,7 @@ st.set_page_config(page_title=("Theo dõi khối lượng mua bán chủ động
                    layout="wide",
                    initial_sidebar_state="collapsed")
 st.title("Theo dõi khối lượng mua bán chủ động")
+st.button("Refresh")
 
 #get companies list
 @st.cache()
