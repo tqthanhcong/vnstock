@@ -72,6 +72,30 @@ def get_data(symbol):
   df3=df_cum[["price"]]
   return df_cum,df1,df2,df3
 
+if st.button("Refresh"):
+  for i in range(len(cols)):
+    try:
+        symbol=stocks[i]
+        data_load_state = cols[i].text("Xin chờ một chút...")
+        df,df_side,df_net,df_price=get_data(symbol)
+        data_load_state.empty()
+        
+        cols[i].subheader("**"+symbol.upper()+"**")
+        cols[i].write("Giá: " + str(df_price.iloc[-1,0]) + \
+                      " ***+/- ATO:*** " + "***"+str(round(df_price.iloc[-1,0]-df_price.iloc[0,0],0))+"***")
+        cols[i].write("Net_vol: " + str(df_net.iloc[-1,0]))
+        
+        if buy_sell_check:
+            cols[i].line_chart(df_side,height=200)
+        if net_vol_check:
+            cols[i].text("Khối lượng mua bán ròng")
+            cols[i].bar_chart(df_net,height=100)
+        if price_check:
+            cols[i].subheader("Giá")
+            df_price.plot(figsize=(16,5))
+            cols[i].pyplot(plt)   
+    except:
+        cols[i].write("Mã này không có")
 
 for i in range(len(cols)):
     try:
