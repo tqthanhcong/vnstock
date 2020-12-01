@@ -9,7 +9,7 @@ st.set_page_config(page_title=("Theo dõi khối lượng mua bán chủ động
                    layout="wide",
                    initial_sidebar_state="collapsed")
 st.title("Theo dõi khối lượng mua bán chủ động")
-st.button("Refresh")
+refresh_button = st.button("Refresh")
 
 #get companies list
 @st.cache()
@@ -73,7 +73,7 @@ def get_data(symbol):
   df3=df_cum[["price"]]
   return df_cum,df1,df2,df3
 
-if st.button("Refresh"):
+if refresh_button:
   for i in range(len(cols)):
     try:
         symbol=stocks[i]
