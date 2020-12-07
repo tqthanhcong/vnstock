@@ -3,13 +3,13 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import requests
-
+import plotly.express as px
+import plotly.graph_objects as go
 
 st.set_page_config(page_title=("Theo dõi khối lượng mua bán chủ động"),
                    layout="wide",
                    initial_sidebar_state="collapsed")
-st.title("Theo dõi khối lượng mua bán chủ động")
-refresh_button = st.button("Refresh")
+st.markdown("<h1 style='text-align: center; color: green;'>Theo dõi khối lượng mua bán chủ động</h1>", unsafe_allow_html=True)
 
 #get companies list
 @st.cache()
@@ -73,48 +73,35 @@ def get_data(symbol):
   df3=df_cum[["price"]]
   return df_cum,df1,df2,df3
 
-if refresh_button:
-  for i in range(len(cols)):
-    try:
-        symbol=stocks[i]
-        data_load_state = cols[i].text("Xin chờ một chút...")
-        df,df_side,df_net,df_price=get_data(symbol)
-        data_load_state.empty()
-        
-        cols[i].subheader("**"+symbol.upper()+"**")
-        cols[i].write("Giá: " + str(df_price.iloc[-1,0]) + \
-                      " ***+/- ATO:*** " + "***"+str(round(df_price.iloc[-1,0]-df_price.iloc[0,0],0))+"***")
-        cols[i].write("Net_vol: " + str(df_net.iloc[-1,0]))
-        
-        if buy_sell_check:
-            cols[i].line_chart(df_side,height=200)
-        if net_vol_check:
-            cols[i].text("Khối lượng mua bán ròng")
-            cols[i].bar_chart(df_net,height=100)
-        if price_check:
-            cols[i].subheader("Giá")
-            df_price.plot(figsize=(16,5))
-            cols[i].pyplot(plt)   
-    except:
-        cols[i].write("Mã này không có")
-
 for i in range(len(cols)):
     try:
         symbol=stocks[i]
         data_load_state = cols[i].text("Xin chờ một chút...")
         df,df_side,df_net,df_price=get_data(symbol)
         data_load_state.empty()
-        
-        cols[i].subheader("**"+symbol.upper()+"**")
-        cols[i].write("Giá: " + str(df_price.iloc[-1,0]) + \
-                      " ***+/- ATO:*** " + "***"+str(round(df_price.iloc[-1,0]-df_price.iloc[0,0],0))+"***")
-        cols[i].write("Net_vol: " + str(df_net.iloc[-1,0]))
-        
+        cols[i].markdown("<h3 style='text-align: center; color: black;'>"+symbol+"</h3>", unsafe_allow_html=True)
+        #cols[i].subheader("**"+symbol.upper()+"**")
+        #my_str="Giá: " + str(df_price.iloc[-1,0])+\
+        #    "  ..... +/- ATO: " + str(round(df_price.iloc[-1,0]-df_price.iloc[0,0],0))+\
+        #    " ..... Net_vol: "+ str(df_net.iloc[-1,0])
+        #cols[i].markdown("<p style='text-align: center; color: gray;'>" + my_str + "</p>", unsafe_allow_html=True)                          
         if buy_sell_check:
-            cols[i].line_chart(df_side,height=200)
+            fig = px.line(df_side, template="plotly_white")
+            fig.update_layout(legend=dict(yanchor="top",y=0.99,
+                                           xanchor="left",x=0.01,
+                                           title_text=''),
+                              margin=dict(l=0, r=0, t=20, b=20))
+            fig.update_xaxes(title_text='',title_font=dict(size=1))
+            fig.update_yaxes(title_text='',title_font=dict(size=1))
+            cols[i].plotly_chart(fig,use_container_width=True)
         if net_vol_check:
             cols[i].text("Khối lượng mua bán ròng")
-            cols[i].bar_chart(df_net,height=100)
+            fig = px.area(df_net, template="plotly_white",height=200)
+            fig.update_layout(showlegend =False,
+                              margin=dict(l=0, r=0, t=20, b=20))
+            fig.update_xaxes(title_text='',title_font=dict(size=1))
+            fig.update_yaxes(title_text='',title_font=dict(size=1))
+            cols[i].plotly_chart(fig,use_container_width=True)
         if price_check:
             cols[i].subheader("Giá")
             df_price.plot(figsize=(16,5))
