@@ -6,10 +6,10 @@ import requests
 import plotly.express as px
 import plotly.graph_objects as go
 
-st.set_page_config(page_title=("Theo dõi khối lượng mua bán chủ động"),
+st.set_page_config(page_title=("Tracking the active buy-sell volume"),
                    layout="wide",
                    initial_sidebar_state="collapsed")
-st.markdown("<h1 style='text-align: center; color: green;'>Theo dõi khối lượng mua bán chủ động</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center; color: green;'>Tracking the active buy-sell volume</h1>", unsafe_allow_html=True)
 
 #get companies list
 @st.cache()
@@ -25,11 +25,11 @@ symbols=get_symbol_list()
 
 #divide layout to columns
 col0=st.sidebar
-col0.header("Nhập thông số")
-col0.subheader("Nhập thêm mã cổ phiếu vào đây")
+col0.header("Input paremeter")
+col0.subheader("Input Symbols")
 stocks = col0.multiselect(label="",
                           options=symbols,default=["VN30F1M","VCB"])
-col0.subheader("Chọn biểu đồ cần vẽ")
+col0.subheader("Choose charts")
 buy_sell_check = col0.checkbox("Volume buy, sell",value=True)
 net_vol_check = col0.checkbox("Net volume (buy-sell)",value=True)
 price_check = col0.checkbox("Giá",value=True)
@@ -95,7 +95,7 @@ for i in range(len(cols)):
             fig.update_yaxes(title_text='',title_font=dict(size=1))
             cols[i].plotly_chart(fig,use_container_width=True)
         if net_vol_check:
-            cols[i].text("Khối lượng mua bán ròng")
+            cols[i].text("Net active buy volume")
             fig = px.area(df_net, template="plotly_white",height=200)
             fig.update_layout(showlegend =False,
                               margin=dict(l=0, r=0, t=20, b=20))
@@ -103,7 +103,7 @@ for i in range(len(cols)):
             fig.update_yaxes(title_text='',title_font=dict(size=1))
             cols[i].plotly_chart(fig,use_container_width=True)
         if price_check:
-            cols[i].subheader("Giá")
+            cols[i].subheader("Price")
             df_price.plot(figsize=(16,5))
             cols[i].pyplot(plt)   
     except:
