@@ -4,3 +4,4 @@ The web app was built in Python using the following libraries:
 * numpy
 * requests
 * matplotlib
+* plotly
