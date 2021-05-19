@@ -76,7 +76,7 @@ def get_data(symbol):
 for i in range(len(cols)):
     try:
         symbol=stocks[i]
-        data_load_state = cols[i].text("Xin chờ một chút...")
+        data_load_state = cols[i].text("Có ngay đây. Chờ chút...")
         df,df_side,df_net,df_price=get_data(symbol)
         data_load_state.empty()
         cols[i].markdown("<h3 style='text-align: center; color: black;'>"+symbol+"</h3>", unsafe_allow_html=True)
