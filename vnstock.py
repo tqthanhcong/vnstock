@@ -31,8 +31,8 @@ stocks = col0.multiselect(label="",
                           options=symbols,default=["VN30F1M","VCB"])
 col0.subheader("Chọn biểu đồ cần vẽ")
 buy_sell_check = col0.checkbox("Volume buy, sell",value=True)
-net_vol_check = col0.checkbox("Net volume (buy-sell)")
-price_check = col0.checkbox("Giá")
+net_vol_check = col0.checkbox("Net volume (buy-sell)",value=True)
+price_check = col0.checkbox("Giá",value=True)
 col_number=len(stocks)
 cols=st.beta_columns(col_number)
 
