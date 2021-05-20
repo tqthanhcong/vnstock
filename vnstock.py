@@ -6,7 +6,7 @@ import requests
 import plotly.express as px
 import plotly.graph_objects as go
 
-st.set_page_config(page_title=("Tracking the active buy-sell volume"),
+st.set_page_config(page_title=("Tracking the active buy-sell volume (8h45 -> 14h45)"),
                    layout="wide",
                    initial_sidebar_state="collapsed")
 st.markdown("<h1 style='text-align: center; color: green;'>Tracking the active buy-sell volume</h1>", unsafe_allow_html=True)
